@@ -1,0 +1,17 @@
+{
+  "name": "object-stream",
+  "version": "1.0.0",
+  "description": "Cleaner node object streams",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "npm test"
+  },
+  "keywords": [
+    "streams"
+  ],
+  "author": "toboid",
+  "license": "MIT"
+}
