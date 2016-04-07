@@ -2,16 +2,25 @@
   "name": "object-stream",
   "version": "1.0.0",
   "description": "Cleaner node object streams",
-  "main": "index.js",
+  "main": "object-stream.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "npm test"
+    "test": "mocha"
   },
   "keywords": [
     "streams"
   ],
   "author": "toboid",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "lodash": "^4.8.2",
+    "mocha": "^2.4.5"
+  },
+  "dependencies": {
+    "concat-stream": "^1.5.1",
+    "readable-stream": "^2.0.6"
+  }
 }
