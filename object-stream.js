@@ -22,23 +22,21 @@ function configureArgs (construct) {
   }
 }
 
-function append (stream, value, callback) {
-  if (value) {
-    stream.push(value)
-    callback()
-  } else {
-    callback('Transform function did not callback or return a value/promise')
-  }
+function isThenable (object) {
+  return object && typeof object.then === 'function'
 }
 
 function appendResultToStream (stream, result, callback) {
-  if (result && typeof result.then === 'function') {
-    result.then((resolvedResult) => {
-      append(stream, resolvedResult, callback)
-    }, callback)
-  } else {
-    append(stream, result, callback)
-  }
+  const promise = isThenable(result) ? result : Promise.resolve(result)
+
+  promise.then((value) => {
+    if (!value) {
+      return callback(new Error('Transform did not callback or return a value/promise'))
+    }
+
+    stream.push(value)
+    callback()
+  }, callback)
 }
 
 module.exports = configureArgs(function (options, transform, flush) {

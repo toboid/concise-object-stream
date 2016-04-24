@@ -25,7 +25,7 @@ describe('object-stream', function () {
   it('works with pipe', (done) => {
     const expected = [5, 10, 20]
     const sourceValues = [1, 2, 4]
-    
+
     const source = stream.Readable({
       objectMode: true,
       read: function () {
@@ -148,7 +148,8 @@ describe('object-stream', function () {
         done('Stream did not error.')
       })
       .on('error', (error) => {
-        expect(error).to.eql('Transform function did not callback or return a value/promise')
+        expect(error).to.be.an('error');
+        expect(error.message).to.eql('Transform did not callback or return a value/promise')
         done()
       })
 
