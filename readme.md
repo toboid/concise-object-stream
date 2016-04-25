@@ -6,18 +6,26 @@
 
 This module is inspired by Rod Vagg's [through2](https://github.com/rvagg/through2) module but by focusing purely on object streams is able to provide a more concise API, including support for returning a value or promise from a transform function.
 
+## Getting started
+Install via NPM
+```
+  npm i concise-object-stream --save
+```
+
 At it's simplest a transform stream can be created from function that returns the desired value to be queued or a promise for that value:
 
 ``` javascript
+var objectStream = require('concise-object-stream')
+
 getKeyStream()
-    .pipe(objectStream(key => getObject(key)))
+    .pipe(objectStream.map(key => getObject(key)))
     .pipe(someOtherStream)
 ```
 
 callback shorthand style is also supported:
 ``` javascript
 getKeyStream()
-    .pipe(objectStream((key, callback) => {
+    .pipe(objectStream.map((key, callback) => {
         const obj = getObject(key);
         callback(null, obj);
     }))
@@ -27,7 +35,7 @@ getKeyStream()
 as is traditional style using `this`:
 ``` javascript
 getKeyStream()
-    .pipe(objectStream(function (key, callback) {
+    .pipe(objectStream.map(function (key, callback) {
         const obj = getObject(key);
         this.push(obj);
         callback();
@@ -36,12 +44,12 @@ getKeyStream()
 ```
 
 ## API
-`objectStream([options], [transform], [flush])`
+`objectStream.map([options], [transform], [flush])`
 ### options
 Options to be passed to the `stream.Transform` constructor, see [here](https://nodejs.org/api/stream.html#stream_new_stream_transform_options) for available options.
 ``` javascript
 getKeyStream()
-    .pipe(objectStream({highWaterMark: 6}, key => getObject(key)))
+    .pipe(objectStream.map({highWaterMark: 6}, key => getObject(key)))
     .pipe(someOtherStream)
 ```
 
@@ -51,7 +59,7 @@ The transform function will be invoked with arguments `object` and `callback`.
 
 ``` javascript
 getKeyStream()
-    .pipe(objectStream(function (key, callback) {
+    .pipe(objectStream.map(function (key, callback) {
         const obj = getObject(key);
         this.push(obj);
         callback();
@@ -62,7 +70,7 @@ getKeyStream()
 `callback` can also be called with an object as a shorthand for queuing a single object on the stream:
 ``` javascript
 getKeyStream()
-    .pipe(objectStream((key, callback) => {
+    .pipe(objectStream.map((key, callback) => {
         const obj = getObject(key);
         callback(null, obj);
     }))
@@ -72,7 +80,7 @@ getKeyStream()
 Instead of using `callback` a value may be returned from the transform function, if the return value is a promise then this will be resolved and the result queued.
 ``` javascript
 getKeyStream()
-    .pipe(objectStream(key => getObject(key)))
+    .pipe(objectStream.map(key => getObject(key)))
     .pipe(someOtherStream)
 ```
 
@@ -83,7 +91,7 @@ The flush function will be invoked with a single argument `done` which can be us
 
 ``` javascript
 getKeyStream()
-    .pipe(objectStream(function (key, callback) {
+    .pipe(objectStream.map(function (key, callback) {
         const obj = getObject(key);
         this.push(obj);
         callback();
@@ -99,7 +107,7 @@ Like the `callback` function, `done` supports a shorthand for queueing a single 
 
 ``` javascript
 getKeyStream()
-    .pipe(objectStream((key, callback) => {
+    .pipe(objectStream.map((key, callback) => {
         const obj = getObject(key);
         callback(null, obj);
     }, done => {
@@ -112,7 +120,7 @@ getKeyStream()
 `flush` also supports returning a value or promise, promises will be resolved and the result queued:
 ``` javascript
 getKeyStream()
-    .pipe(objectStream(key => getObject(key), () => getFinalObj()))
+    .pipe(objectStream.map(key => getObject(key), () => getFinalObj()))
     .pipe(someOtherStream)
 ```
 
