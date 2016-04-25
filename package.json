@@ -1,8 +1,8 @@
 {
-  "name": "object-stream",
+  "name": "concise-object-stream",
   "version": "1.0.0",
-  "description": "Cleaner node object streams",
-  "main": "object-stream.js",
+  "description": "More concise node object streams",
+  "main": "index.js",
   "directories": {
     "test": "test"
   },

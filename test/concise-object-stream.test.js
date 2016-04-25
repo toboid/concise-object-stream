@@ -3,9 +3,9 @@
 const expect = require('chai').expect
 const stream = require('readable-stream')
 const concat = require('concat-stream')
-const objectStream = require('../object-stream')
+const objectStream = require('../')
 
-describe('object-stream', function () {
+describe('concise-object-stream', function () {
   it('uses stream options', (done) => {
     const options = {highWaterMark: 5}
     const transformStream = objectStream(options, function (multiplier, callback) {
