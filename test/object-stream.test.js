@@ -8,18 +8,16 @@ const objectStream = require('../object-stream')
 describe('object-stream', function () {
   it('uses stream options', (done) => {
     const options = {highWaterMark: 5}
-    const multiplyBy5 = objectStream(options, function (multiplier, callback) {
+    const transformStream = objectStream(options, function (multiplier, callback) {
       expect(this._readableState.highWaterMark).to.eql(5)
       expect(this._writableState.highWaterMark).to.eql(5)
       callback()
     })
     .on('data', () => {})
-    .on('end', () => {
-      done()
-    })
+    .on('end', done)
 
-    multiplyBy5.write(1)
-    multiplyBy5.end()
+    transformStream.write()
+    transformStream.end()
   })
 
   it('works with pipe', (done) => {
@@ -39,17 +37,17 @@ describe('object-stream', function () {
 
     source
       .pipe(objectStream((multiplier, callback) => {
-        callback(null, multiplier * 5)
+        callback(null, {value: multiplier * 5})
       }))
       .pipe(concat({encoding: 'object'}, function (actual) {
-        expect(expected).to.eql(actual)
+        expect(expected).to.eql(actual.map((a) => a.value))
         done()
       }))
   })
 
   describe('transform', function () {
     it('defaults to a pass through stream', (done) => {
-      const multiplyBy5 = objectStream()
+      const throughStream = objectStream()
       .on('data', (obj) => {
         expect(obj).to.eql(1)
       })
@@ -57,8 +55,8 @@ describe('object-stream', function () {
         done()
       })
 
-      multiplyBy5.write(1)
-      multiplyBy5.end()
+      throughStream.write(1)
+      throughStream.end()
     })
 
     it('transforms an object stream with callback shorthand', (done) => {
@@ -143,7 +141,7 @@ describe('object-stream', function () {
     })
 
     it('errors when transform function has no callback or return value', (done) => {
-      const multiplyBy5 = objectStream((multiplier) => {})
+      const invalidStream = objectStream((multiplier) => {})
       .on('data', () => {
         done('Stream did not error.')
       })
@@ -153,17 +151,17 @@ describe('object-stream', function () {
         done()
       })
 
-      multiplyBy5.write(1)
-      multiplyBy5.end()
+      invalidStream.write(1)
+      invalidStream.end()
     })
   })
 
   describe('flush', function () {
     it('supports flush callback shorthand', (done) => {
-      const expected = [5, 10, 20, 'the end']
+      const expected = [1, 2, 4, 'the end']
       const actual = []
 
-      const multiplyBy5 = objectStream((multiplier) => multiplier * 5, (callback) => {
+      const throughStream = objectStream((object) => object, (callback) => {
         callback(null, 'the end')
       })
       .on('data', (obj) => {
@@ -174,17 +172,17 @@ describe('object-stream', function () {
         done()
       })
 
-      multiplyBy5.write(1)
-      multiplyBy5.write(2)
-      multiplyBy5.write(4)
-      multiplyBy5.end()
+      throughStream.write(1)
+      throughStream.write(2)
+      throughStream.write(4)
+      throughStream.end()
     })
 
     it('supports flush callback', (done) => {
-      const expected = [5, 10, 20, 'the end']
+      const expected = [1, 2, 4, 'the end']
       const actual = []
 
-      const multiplyBy5 = objectStream((multiplier) => multiplier * 5, function (callback) {
+      const throughStream = objectStream((object) => object, function (callback) {
         this.push('the end')
         callback()
       })
@@ -196,17 +194,17 @@ describe('object-stream', function () {
         done()
       })
 
-      multiplyBy5.write(1)
-      multiplyBy5.write(2)
-      multiplyBy5.write(4)
-      multiplyBy5.end()
+      throughStream.write(1)
+      throughStream.write(2)
+      throughStream.write(4)
+      throughStream.end()
     })
 
     it('supports flush with return value shorthand', (done) => {
-      const expected = [5, 10, 20, 'the end']
+      const expected = [1, 2, 4, 'the end']
       const actual = []
 
-      const multiplyBy5 = objectStream((multiplier) => multiplier * 5, () => 'the end')
+      const throughStream = objectStream((object) => object, () => 'the end')
       .on('data', (obj) => {
         actual.push(obj)
       })
@@ -215,17 +213,17 @@ describe('object-stream', function () {
         done()
       })
 
-      multiplyBy5.write(1)
-      multiplyBy5.write(2)
-      multiplyBy5.write(4)
-      multiplyBy5.end()
+      throughStream.write(1)
+      throughStream.write(2)
+      throughStream.write(4)
+      throughStream.end()
     })
 
     it('supports flush with promise shorthand', (done) => {
-      const expected = [5, 10, 20, 'the end']
+      const expected = [1, 2, 4, 'the end']
       const actual = []
 
-      const multiplyBy5 = objectStream((multiplier) => multiplier * 5, () => Promise.resolve('the end'))
+      const throughStream = objectStream((object) => object, () => Promise.resolve('the end'))
       .on('data', (obj) => {
         actual.push(obj)
       })
@@ -234,10 +232,10 @@ describe('object-stream', function () {
         done()
       })
 
-      multiplyBy5.write(1)
-      multiplyBy5.write(2)
-      multiplyBy5.write(4)
-      multiplyBy5.end()
+      throughStream.write(1)
+      throughStream.write(2)
+      throughStream.write(4)
+      throughStream.end()
     })
   })
 })
