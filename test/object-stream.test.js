@@ -148,7 +148,7 @@ describe('object-stream', function () {
         done('Stream did not error.')
       })
       .on('error', (error) => {
-        expect(error).to.be.an('error');
+        expect(error).to.be.an('error')
         expect(error.message).to.eql('Transform did not callback or return a value/promise')
         done()
       })
