@@ -5,10 +5,10 @@ const stream = require('readable-stream')
 const concat = require('concat-stream')
 const objectStream = require('../')
 
-describe('concise-object-stream', function () {
+describe('map', function () {
   it('uses stream options', (done) => {
     const options = {highWaterMark: 5}
-    const transformStream = objectStream(options, function (multiplier, callback) {
+    const transformStream = objectStream.map(options, function (multiplier, callback) {
       expect(this._readableState.highWaterMark).to.eql(5)
       expect(this._writableState.highWaterMark).to.eql(5)
       callback()
@@ -36,7 +36,7 @@ describe('concise-object-stream', function () {
     })
 
     source
-      .pipe(objectStream((multiplier, callback) => {
+      .pipe(objectStream.map((multiplier, callback) => {
         callback(null, {value: multiplier * 5})
       }))
       .pipe(concat({encoding: 'object'}, function (actual) {
@@ -47,7 +47,7 @@ describe('concise-object-stream', function () {
 
   describe('transform', function () {
     it('defaults to a pass through stream', (done) => {
-      const throughStream = objectStream()
+      const throughStream = objectStream.map()
       .on('data', (obj) => {
         expect(obj).to.eql(1)
       })
@@ -63,7 +63,7 @@ describe('concise-object-stream', function () {
       const expected = [5, 10, 20]
       const actual = []
 
-      const multiplyBy5 = objectStream((multiplier, callback) => {
+      const multiplyBy5 = objectStream.map((multiplier, callback) => {
         callback(null, {value: multiplier * 5})
       })
       .on('data', (obj) => {
@@ -84,7 +84,7 @@ describe('concise-object-stream', function () {
       const expected = [5, 10, 20]
       const actual = []
 
-      const multiplyBy5 = objectStream(function (multiplier, callback) {
+      const multiplyBy5 = objectStream.map(function (multiplier, callback) {
         this.push({value: multiplier * 5})
         callback()
       })
@@ -106,7 +106,7 @@ describe('concise-object-stream', function () {
       const expected = [5, 10, 20]
       const actual = []
 
-      const multiplyBy5 = objectStream((multiplier) => ({value: multiplier * 5}))
+      const multiplyBy5 = objectStream.map((multiplier) => ({value: multiplier * 5}))
       .on('data', (obj) => {
         actual.push(obj.value)
       })
@@ -125,7 +125,7 @@ describe('concise-object-stream', function () {
       const expected = [5, 10, 20]
       const actual = []
 
-      const multiplyBy5 = objectStream((multiplier) => Promise.resolve({value: multiplier * 5}))
+      const multiplyBy5 = objectStream.map((multiplier) => Promise.resolve({value: multiplier * 5}))
       .on('data', (obj) => {
         actual.push(obj.value)
       })
@@ -141,7 +141,7 @@ describe('concise-object-stream', function () {
     })
 
     it('errors when transform function has no callback or return value', (done) => {
-      const invalidStream = objectStream((multiplier) => {})
+      const invalidStream = objectStream.map((multiplier) => {})
       .on('data', () => {
         done('Stream did not error.')
       })
@@ -161,7 +161,7 @@ describe('concise-object-stream', function () {
       const expected = [1, 2, 4, 'the end']
       const actual = []
 
-      const throughStream = objectStream((object) => object, (callback) => {
+      const throughStream = objectStream.map((object) => object, (callback) => {
         callback(null, 'the end')
       })
       .on('data', (obj) => {
@@ -182,7 +182,7 @@ describe('concise-object-stream', function () {
       const expected = [1, 2, 4, 'the end']
       const actual = []
 
-      const throughStream = objectStream((object) => object, function (callback) {
+      const throughStream = objectStream.map((object) => object, function (callback) {
         this.push('the end')
         callback()
       })
@@ -204,7 +204,7 @@ describe('concise-object-stream', function () {
       const expected = [1, 2, 4, 'the end']
       const actual = []
 
-      const throughStream = objectStream((object) => object, () => 'the end')
+      const throughStream = objectStream.map((object) => object, () => 'the end')
       .on('data', (obj) => {
         actual.push(obj)
       })
@@ -223,7 +223,7 @@ describe('concise-object-stream', function () {
       const expected = [1, 2, 4, 'the end']
       const actual = []
 
-      const throughStream = objectStream((object) => object, () => Promise.resolve('the end'))
+      const throughStream = objectStream.map((object) => object, () => Promise.resolve('the end'))
       .on('data', (obj) => {
         actual.push(obj)
       })

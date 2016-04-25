@@ -70,13 +70,15 @@ function appendResultToStream (stream, result, callback) {
   }, callback)
 }
 
-module.exports = configureArgs(function (options, transform, flush) {
-  const transformArgs = Object.assign({
-    objectMode: true,
-    transform: wrapTransform(transform),
-    flush: flush ? wrapFlush(flush) : null
-  }, options)
+module.exports = {
+  map: configureArgs(function (options, transform, flush) {
+    const transformArgs = Object.assign({
+      objectMode: true,
+      transform: wrapTransform(transform),
+      flush: flush ? wrapFlush(flush) : null
+    }, options)
 
-  return new stream.Transform(transformArgs)
-})
+    return new stream.Transform(transformArgs)
+  })
+}
 
