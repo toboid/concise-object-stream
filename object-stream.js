@@ -6,15 +6,23 @@ function noop (chunk, callback) {
   callback(null, chunk)
 }
 
+function isFunction (object) {
+  return typeof object === 'function'
+}
+
+function isThenable (object) {
+  return object && isFunction(object.then)
+}
+
 function configureArgs (construct) {
   return function (options, transform, flush) {
-    if (typeof options === 'function') {
+    if (isFunction(options)) {
       flush = transform
       transform = options
       options = {}
     }
 
-    if (typeof transform !== 'function') {
+    if (!isFunction(transform)) {
       transform = noop
     }
 
@@ -22,8 +30,31 @@ function configureArgs (construct) {
   }
 }
 
-function isThenable (object) {
-  return object && typeof object.then === 'function'
+function wrapTransform (transform) {
+  return function (chunk, encoding, callback) {
+    const result = transform.call(this, chunk, callback, this)
+
+    if (transform.length < 2) {
+      return appendResultToStream(this, result, callback)
+    }
+  }
+}
+
+function wrapFlush (flush) {
+  return function (done) {
+    if (flush.length === 0) {
+      const result = flush.call(this)
+      return appendResultToStream(this, result, done)
+    }
+
+    flush.call(this, (err, obj) => {
+      if (obj) {
+        this.push(obj)
+      }
+
+      done(err)
+    })
+  }
 }
 
 function appendResultToStream (stream, result, callback) {
@@ -42,33 +73,8 @@ function appendResultToStream (stream, result, callback) {
 module.exports = configureArgs(function (options, transform, flush) {
   const transformArgs = Object.assign({
     objectMode: true,
-    transform: function (chunk, encoding, callback) {
-      const result = transform.call(this, chunk, callback, this)
-
-      // If `callback` param wasn't declared we expect a result
-      if (transform.length < 2) {
-        appendResultToStream(this, result, callback)
-      }
-    },
-    flush: function (done) {
-      if (typeof flush !== 'function') {
-        return done()
-      }
-
-      // If `done` param wasn't declared we expect a result
-      if (flush.length === 0) {
-        const result = flush.call(this)
-        appendResultToStream(this, result, done)
-      } else {
-        flush.call(this, (err, obj) => {
-          if (obj) {
-            this.push(obj)
-          }
-
-          done(err)
-        })
-      }
-    }
+    transform: wrapTransform(transform),
+    flush: flush ? wrapFlush(flush) : null
   }, options)
 
   return new stream.Transform(transformArgs)
