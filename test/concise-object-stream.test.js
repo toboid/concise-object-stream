@@ -3,7 +3,7 @@
 const expect = require('chai').expect
 const stream = require('readable-stream')
 const concat = require('concat-stream')
-const objectStream = require('../')
+const objectStream = require('../lib')
 
 describe('map', function () {
   it('uses stream options', (done) => {
