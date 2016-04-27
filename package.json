@@ -8,7 +8,7 @@
     "compile": "babel lib --out-dir dist",
     "coverage": "nyc --require babel-core/register mocha ./test",
     "lint": "standard",
-    "test": "mocha --compilers js:babel-register ./test",
+    "test": "nyc --check-coverage --require babel-core/register mocha ./test",
     "watch": "chokidar 'lib/*.js' 'test/*.js' -c 'npm run lint && npm test'",
     "ci": "npm run lint && npm test && npm run coverage",
     "prepublish": "npm run compile"
@@ -25,6 +25,7 @@
     "chai": "^3.5.0",
     "chokidar-cli": "^1.2.0",
     "concat-stream": "^1.5.1",
+    "coveralls": "^2.11.9",
     "lodash": "^4.8.2",
     "mocha": "^2.4.5",
     "nyc": "^6.4.0",
