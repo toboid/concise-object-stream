@@ -6,7 +6,7 @@
   "scripts": {
     "precompile": "rm -f dist/*",
     "compile": "babel lib --out-dir dist",
-    "coverage": "nyc --require babel-core/register mocha ./test",
+    "coverage": "nyc --require babel-core/register --reporter=lcov mocha ./test && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "lint": "standard",
     "test": "nyc --check-coverage --require babel-core/register mocha ./test",
     "watch": "chokidar 'lib/*.js' 'test/*.js' -c 'npm run lint && npm test'",
