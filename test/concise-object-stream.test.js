@@ -4,7 +4,8 @@ const expect = require('chai').expect
 const stream = require('readable-stream')
 const concat = require('concat-stream')
 const ThenPromise = require('promise')
-const objectStream = require('../lib')
+const testTarget = process.env.TEST_TARGET || 'lib'
+const objectStream = require('../' + testTarget)
 
 describe('map', function () {
   it('uses stream options', (done) => {
