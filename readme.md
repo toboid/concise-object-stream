@@ -6,6 +6,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/toboid/concise-object-stream/badge.svg?branch=master)](https://coveralls.io/github/toboid/concise-object-stream?branch=master)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 [![Dependencies](https://david-dm.org/toboid/concise-object-stream.svg)](https://github.com/toboid/concise-object-stream/blob/master/package.json)
+[![npm version](https://badge.fury.io/js/concise-object-stream.svg)](https://badge.fury.io/js/concise-object-stream)
 
 This module is inspired by Rod Vagg's [through2](https://github.com/rvagg/through2) module but by focusing purely on object streams is able to provide a more concise API, including support for returning a value or promise from a transform function.
 
