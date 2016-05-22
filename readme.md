@@ -4,7 +4,6 @@
 
 [![Build Status](https://travis-ci.org/toboid/concise-object-stream.svg?branch=master)](https://travis-ci.org/toboid/concise-object-stream)
 [![Coverage Status](https://coveralls.io/repos/github/toboid/concise-object-stream/badge.svg?branch=master)](https://coveralls.io/github/toboid/concise-object-stream?branch=master)
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 [![Dependencies](https://david-dm.org/toboid/concise-object-stream.svg)](https://github.com/toboid/concise-object-stream/blob/master/package.json)
 [![npm version](https://badge.fury.io/js/concise-object-stream.svg)](https://badge.fury.io/js/concise-object-stream)
 
