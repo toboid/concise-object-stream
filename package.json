@@ -36,7 +36,7 @@
     "eslint-config-toboid": "^1.0.1",
     "lodash": "^4.8.2",
     "mocha": "^2.5.3",
-    "nyc": "^7.0.0"
+    "nyc": "^8.4.0"
   },
   "dependencies": {
     "promise": "^7.1.1",
