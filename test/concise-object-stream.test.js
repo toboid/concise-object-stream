@@ -3,7 +3,6 @@
 const expect = require('chai').expect;
 const stream = require('readable-stream');
 const concat = require('concat-stream');
-const ThenPromise = require('promise');
 const testTarget = process.env.TEST_TARGET || 'lib';
 const objectStream = require('../' + testTarget);
 
@@ -127,7 +126,7 @@ describe('map', function () {
       const expected = [5, 10, 20];
       const actual = [];
 
-      const multiplyBy5 = objectStream.map((multiplier) => ThenPromise.resolve({value: multiplier * 5}))
+      const multiplyBy5 = objectStream.map((multiplier) => Promise.resolve({value: multiplier * 5}))
       .on('data', (obj) => {
         actual.push(obj.value);
       })
@@ -225,7 +224,7 @@ describe('map', function () {
       const expected = [1, 2, 4, 'the end'];
       const actual = [];
 
-      const throughStream = objectStream.map((object) => object, () => ThenPromise.resolve('the end'))
+      const throughStream = objectStream.map((object) => object, () => Promise.resolve('the end'))
       .on('data', (obj) => {
         actual.push(obj);
       })
