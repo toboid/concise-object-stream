@@ -1,4 +1,4 @@
-# object-stream
+# concise-object-stream
 
 **A simplified API for working with node object streams**
 
