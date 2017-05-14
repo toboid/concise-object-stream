@@ -1,5 +1,7 @@
 # concise-object-stream
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/toboid/concise-object-stream.svg)](https://greenkeeper.io/)
+
 **A simplified API for working with node object streams**
 
 [![Build Status](https://travis-ci.org/toboid/concise-object-stream.svg?branch=master)](https://travis-ci.org/toboid/concise-object-stream)
