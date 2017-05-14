@@ -24,7 +24,7 @@
     "eslint": "^3.9.1",
     "eslint-config-toboid": "1.1.0",
     "lodash": "^4.16.5",
-    "mocha": "^3.2.0",
+    "mocha": "^3.4.0",
     "nyc": "^10.0.0"
   },
   "dependencies": {
