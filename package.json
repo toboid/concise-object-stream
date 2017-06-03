@@ -25,7 +25,7 @@
     "eslint-config-toboid": "1.1.0",
     "lodash": "^4.16.5",
     "mocha": "^3.4.1",
-    "nyc": "^10.0.0"
+    "nyc": "^11.0.2"
   },
   "dependencies": {
     "readable-stream": "^2.0.6"
