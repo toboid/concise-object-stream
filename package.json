@@ -17,7 +17,7 @@
   "license": "MIT",
   "respository": "toboid/concise-object-stream",
   "devDependencies": {
-    "chai": "^3.5.0",
+    "chai": "^4.0.2",
     "chokidar-cli": "^1.2.0",
     "concat-stream": "^1.5.1",
     "coveralls": "^2.11.9",
