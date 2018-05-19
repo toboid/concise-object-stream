@@ -2,7 +2,7 @@
   "name": "concise-object-stream",
   "version": "1.0.8",
   "description": "More concise node object streams",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "lint": "eslint 'lib/**' 'test/**'",
     "test": "nyc --check-coverage mocha ./test",

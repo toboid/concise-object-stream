@@ -1,9 +1,9 @@
 node_modules/
-lib/
 test/
 coverage/
 npm-debug.log
 .travis.yml
+.eslintrc.yml
 .babelrc
 .npmignore
 .nyc_output/
