@@ -1,6 +1,6 @@
 {
   "name": "concise-object-stream",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "More concise node object streams",
   "main": "lib/index.js",
   "scripts": {
