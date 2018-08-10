@@ -28,6 +28,6 @@
     "nyc": "^12.0.2"
   },
   "dependencies": {
-    "readable-stream": "^2.0.6"
+    "readable-stream": "^3.0.0"
   }
 }
